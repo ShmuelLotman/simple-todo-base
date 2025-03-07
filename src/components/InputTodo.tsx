@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useTodosStore } from '../store'
 import { TUser } from '../types/users'
 import { useUsersStore } from '../store/useUsersStore'
-
+import Button from '../ui/Button/Button'
 function InputTodo() {
   const [title, setTitle] = useState('')
   const [assignedTo, setAssignedTo] = useState<TUser['id'] | null>(null)
@@ -61,12 +61,15 @@ function InputTodo() {
           </option>
         ))}
       </select>
-      <input
+      <Button
+        variant="primary"
+        size="small"
+        shape="pill"
         type="submit"
-        className="input-submit"
-        value="Submit"
         data-testid="todo-submit"
-      />
+      >
+        Submit
+      </Button>
     </form>
   )
 }
