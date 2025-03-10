@@ -4,25 +4,24 @@ import {
   DragOverEvent,
   DragStartEvent,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
+import { useState } from 'react'
 import { useShallow } from 'zustand/shallow'
 import { useStore } from '../../store'
+import { FilterInput } from '../FilterInput/FilterInput'
 import { AddColumnModal, AddTodoModal } from '../modals'
+import { StatusColumn } from '../StatusColumn/StatusColumn'
 import {
+  AddTodoButton,
+  BoardActions,
   BoardContainer,
   BoardInnerContainer,
-  HeaderText,
-  BoardActions,
-  AddTodoButton,
-  StyledPlus,
   Header,
+  HeaderText,
+  StyledPlus,
 } from './style'
-import { FilterInput } from '../FilterInput/FilterInput'
-import { StatusColumn } from '../StatusColumn/StatusColumn'
-import { useState } from 'react'
 
 export function Board() {
   const { currentBoard } = useStore()
@@ -207,7 +206,6 @@ export function Board() {
       </Header>
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
