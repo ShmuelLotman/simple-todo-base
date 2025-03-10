@@ -78,7 +78,11 @@ export function EditTodoModal({
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    data-testid="edit-todo-title-input"
+                    placeholder="Edit todo title..."
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -92,7 +96,11 @@ export function EditTodoModal({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    data-testid="edit-todo-description-input"
+                    placeholder="Edit todo description..."
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -116,7 +124,11 @@ export function EditTodoModal({
                   </FormControl>
                   <SelectContent className="z-[1009]">
                     {statuses?.map((status) => (
-                      <SelectItem key={status} value={status}>
+                      <SelectItem
+                        data-testid={`edit-todo-status-select-item-${status}`}
+                        key={status}
+                        value={status}
+                      >
                         {status}
                       </SelectItem>
                     ))}
@@ -143,7 +155,11 @@ export function EditTodoModal({
                   </FormControl>
                   <SelectContent className="z-[1009]">
                     {users?.map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
+                      <SelectItem
+                        data-testid={`edit-todo-assigned-to-select-item-${user.id}`}
+                        key={user.id}
+                        value={user.id}
+                      >
                         {user.name}
                       </SelectItem>
                     ))}
@@ -153,7 +169,9 @@ export function EditTodoModal({
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button data-testid="edit-todo-modal-submit" type="submit">
+            Submit
+          </Button>
         </form>
       </Form>
     </BaseModal>

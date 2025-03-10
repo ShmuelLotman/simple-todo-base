@@ -53,14 +53,20 @@ export function AddColumnModal({ onClose }: { onClose: () => void }) {
               <FormItem>
                 <FormLabel>Add a column:</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    placeholder="Add column name..."
+                    {...field}
+                    data-testid="add-column-input"
+                  />
                 </FormControl>
 
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button data-testid="add-column-modal-submit" type="submit">
+            Submit
+          </Button>
         </form>
       </Form>
     </BaseModal>

@@ -14,7 +14,7 @@ import { FilterInput } from '../FilterInput/FilterInput'
 import { AddColumnModal, AddTodoModal } from '../modals'
 import { StatusColumn } from '../StatusColumn/StatusColumn'
 import {
-  AddTodoButton,
+  AddActionButton,
   BoardActions,
   BoardContainer,
   BoardInnerContainer,
@@ -194,14 +194,20 @@ export function Board() {
         <HeaderText>{currentBoard?.name}</HeaderText>
         <BoardActions>
           <FilterInput />
-          <AddTodoButton onClick={() => setIsAddTodoModalOpen(true)}>
+          <AddActionButton
+            data-testid="add-todo-button"
+            onClick={() => setIsAddTodoModalOpen(true)}
+          >
             <StyledPlus />
             Add Todo
-          </AddTodoButton>
-          <AddTodoButton onClick={() => setIsAddColumnModalOpen(true)}>
+          </AddActionButton>
+          <AddActionButton
+            data-testid="add-column-button"
+            onClick={() => setIsAddColumnModalOpen(true)}
+          >
             <StyledPlus />
             Add Column
-          </AddTodoButton>
+          </AddActionButton>
         </BoardActions>
       </Header>
       <DndContext

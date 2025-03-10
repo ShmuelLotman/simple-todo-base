@@ -36,7 +36,7 @@ export const HeaderText = styled.h2`
   line-height: 34px;
 `
 
-export const AddTodoButton = styled.button`
+export const AddActionButton = styled.button`
   display: flex;
   align-items: center;
   gap: 10px;

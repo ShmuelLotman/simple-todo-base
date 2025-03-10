@@ -31,7 +31,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "eslintConfig": {
     "extends": "react-app"
