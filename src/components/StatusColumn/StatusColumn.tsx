@@ -12,8 +12,16 @@ import { TodoCard } from '../TodoCard/TodoCard'
 import { TrashIcon } from 'lucide-react'
 
 export function StatusColumn({ status }: { status: string }) {
+  const filterText = useStore((state) => state.filterText)
   const todos = useStore(
-    useShallow((state) => state.todos.filter((todo) => todo.status === status))
+    useShallow((state) =>
+      state.todos.filter(
+        (todo) =>
+          todo.status === status &&
+          (todo.title.toLowerCase().includes(filterText) ||
+            todo.description.toLowerCase().includes(filterText))
+      )
+    )
   )
   const currentBoard = useStore((state) => state.currentBoard)
   const updateBoard = useStore((state) => state.updateBoard)

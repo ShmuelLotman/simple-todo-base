@@ -12,6 +12,8 @@ import { StatusColumn } from '../StatusColumn/StatusColumn'
 import { useState } from 'react'
 import { AddTodoModal } from '../modals'
 import { AddColumnModal } from '../modals/AddColumnModal'
+import { FilterInput } from '../FilterInput'
+
 export function Board() {
   const [isAddTodoModalOpen, setIsAddTodoModalOpen] = useState(false)
   const [isAddColumnModalOpen, setIsAddColumnModalOpen] = useState(false)
@@ -22,6 +24,7 @@ export function Board() {
       <Header>
         <HeaderText>{currentBoard?.name}</HeaderText>
         <BoardActions>
+          <FilterInput />
           <AddTodoButton onClick={() => setIsAddTodoModalOpen(true)}>
             <StyledPlus />
             Add Todo

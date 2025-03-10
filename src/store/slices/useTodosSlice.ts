@@ -6,12 +6,14 @@ import { sampleTodos } from '../../mock-data/todos'
 
 export interface TodosState {
   todos: Todo[]
+  filterText: string
 }
 
 export interface TodosActions {
   addTodo: (todo: Todo) => void
   updateTodo: (id: Todo['id'], todo: Partial<Todo>) => void
   deleteTodo: (id: Todo['id']) => void
+  setFilterText: (filterText: string) => void
 }
 
 export type TTodosSlice = TodosState & TodosActions
@@ -20,6 +22,7 @@ export const useTodosSlice: StateCreator<TStore, [], [], TTodosSlice> = (
   set,
   get
 ) => ({
+  filterText: '',
   todos: sampleTodos,
 
   addTodo: (todo) =>
@@ -39,5 +42,8 @@ export const useTodosSlice: StateCreator<TStore, [], [], TTodosSlice> = (
     })),
   deleteTodo: (id) => {
     set((state) => ({ todos: state.todos.filter((t) => t.id !== id) }))
+  },
+  setFilterText: (filterText) => {
+    set({ filterText })
   },
 })
