@@ -22,6 +22,8 @@ import {
 import { Todo } from '@/types/todos'
 import { useStore } from '@/store'
 import { useState } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { EditTodoModal } from '../modals'
 export function TodoCard({ todo }: { todo: Todo }) {
   const [isEditTodoModalOpen, setIsEditTodoModalOpen] = useState(false)
@@ -30,15 +32,53 @@ export function TodoCard({ todo }: { todo: Todo }) {
   const currentBoard = useStore((state) => state.currentBoard)
   const updateTodo = useStore((state) => state.updateTodo)
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: todo.id,
+    data: {
+      type: 'todo',
+      todo,
+    },
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
   return (
-    <TodoCardContainer>
+    <TodoCardContainer
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       <TodoCardHeader>
         <TodoCardTitle>{todo.title}</TodoCardTitle>
         <ActionButtons>
-          <EditButton onClick={() => setIsEditTodoModalOpen(true)}>
+          <EditButton
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              setIsEditTodoModalOpen(true)
+            }}
+          >
             <PencilIcon className="w-3 h-3" />
           </EditButton>
-          <DeleteButton onClick={() => deleteTodo(todo.id)}>
+          <DeleteButton
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              deleteTodo(todo.id)
+            }}
+          >
             <TrashIcon className="w-3 h-3" />
           </DeleteButton>
         </ActionButtons>
