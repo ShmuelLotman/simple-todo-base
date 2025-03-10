@@ -34,7 +34,7 @@ export function FilterInput() {
     <FilterInputContainer>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FilterInputSubmit type="submit">
+          <FilterInputSubmit type="submit" data-testid="filter-input-submit">
             <Magnifying />
           </FilterInputSubmit>
           <FormField
@@ -44,6 +44,7 @@ export function FilterInput() {
               <FormItem>
                 <FormControl>
                   <StyledInput
+                    data-testid="filter-input"
                     placeholder="Search..."
                     {...field}
                     value={field.value ?? ''}

@@ -1,52 +1,127 @@
 import { test, expect } from '@playwright/test'
+import { createColumn, createTodo } from 'e2e/fixtures/helpers'
 
-test('is able to add a todo', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000')
+  await page.evaluate(() => window.localStorage.clear())
+})
 
-  // Expect a title "to contain" a substring.
-  await expect(page.getByTestId('todo-app-header')).toHaveText(
-    'Simple Todo App'
+test('CRUD operations for todos', async ({ page }) => {
+  await createTodo(page, 'Test Todo', 'Test Description', 'todo', 'John Doe')
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+
+  await page.getByTestId('edit-todo-button-Test Todo').click()
+
+  await page.getByTestId('edit-todo-title-input').fill('Updated Todo')
+  await page.getByTestId('edit-todo-modal-submit').click()
+
+  await expect(page.getByText('Updated Todo')).toBeVisible()
+
+  await page.getByTestId('delete-todo-button-Updated Todo').click()
+
+  await expect(page.getByText('Updated Todo')).not.toBeVisible()
+})
+
+test('COLUMN create delete', async ({ page }) => {
+  await createColumn(page, 'Test Column')
+
+  await expect(page.getByText('Test Column')).toBeVisible()
+
+  await page.getByTestId('delete-status-column-button-Test Column').click()
+
+  await expect(page.getByText('Test Column')).not.toBeVisible()
+})
+
+test('filter input', async ({ page }) => {
+  await createTodo(page, 'Test Todo', 'Test Description', 'todo', 'John Doe')
+  await createTodo(page, 'Party time', 'get funky', 'todo', 'John Doe')
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+  await expect(page.getByText('Party time')).toBeVisible()
+
+  await page.getByTestId('filter-input').fill('Test Todo')
+  await page.getByTestId('filter-input-submit').click()
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+  await expect(page.getByText('Party time')).not.toBeVisible()
+
+  await page.getByTestId('filter-input').fill('')
+  await page.getByTestId('filter-input-submit').click()
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+  await expect(page.getByText('Party time')).toBeVisible()
+})
+
+test('drag and drop todo across columns', async ({ page }) => {
+  await createColumn(page, 'Uptown')
+
+  await createTodo(page, 'Test Todo', 'Test Description', 'todo', 'John Doe')
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+  await expect(page.getByText('Uptown')).toBeVisible()
+
+  const testTodo = await page.getByText('Test Todo')
+  const testTodoBounding = await testTodo.boundingBox()
+
+  await page.mouse.move(
+    testTodoBounding!.x + testTodoBounding!.width / 2,
+    testTodoBounding!.y + testTodoBounding!.height / 2
+  )
+
+  await page.mouse.down()
+  await page.waitForTimeout(100)
+
+  const uptownColumn = await page.getByText('Uptown')
+  const uptownColumnBounding = await uptownColumn.boundingBox()
+
+  await page.mouse.move(
+    uptownColumnBounding!.x + uptownColumnBounding!.width / 2,
+    uptownColumnBounding!.y + uptownColumnBounding!.height / 2
+  )
+
+  await page.mouse.up()
+
+  await expect(page.getByText('Test Todo')).toBeVisible()
+
+  expect(await page.getByTestId('todo-Uptown-title').first()).toHaveText(
+    'Test Todo'
   )
 })
 
-test('ability to create a todo', async ({ page }) => {
-  await page.goto('http://localhost:3000')
+test('drag and reorder todos within a column', async ({ page }) => {
+  await createTodo(page, 'Test Todo', 'Test Description', 'todo', 'John Doe')
 
-  // Click the get started link.
-  await page.getByTestId('todo-input').fill('New Todo')
-  await page.getByTestId('todo-submit').click()
+  await expect(page.getByTestId('todo-todo-title').first()).not.toHaveText(
+    'Test Todo'
+  )
 
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByText('New Todo')).toBeVisible()
+  await expect(page.getByTestId('todo-todo-title').last()).toHaveText(
+    'Test Todo'
+  )
 
-  await page.getByTestId('todo-checkbox').last().click()
+  const firstTodo = await page.getByTestId('todo-todo-title').first()
+  const firstTodoBounding = await firstTodo.boundingBox()
 
-  expect(page.getByTestId('todo-checkbox').last()).toBeChecked()
+  const lastTodo = await page.getByText('Test Todo')
+  const lastTodoBounding = await lastTodo.boundingBox()
 
-  await page.getByTestId('todo-checkbox').last().click()
+  await page.mouse.move(
+    lastTodoBounding!.x + lastTodoBounding!.width / 2,
+    lastTodoBounding!.y + lastTodoBounding!.height / 2
+  )
 
-  expect(page.getByTestId('todo-checkbox').last()).not.toBeChecked()
+  await page.mouse.down()
+  await page.waitForTimeout(100)
 
-  await page.getByTestId('todo-delete').last().click()
+  await page.mouse.move(
+    firstTodoBounding!.x + firstTodoBounding!.width / 2,
+    firstTodoBounding!.y + firstTodoBounding!.height / 3
+  )
 
-  await expect(page.getByText('New Todo')).not.toBeVisible()
-})
+  await page.mouse.up()
 
-test('ability to assign a todo to a user', async ({ page }) => {
-  await page.goto('http://localhost:3000')
-
-  // Click the get started link.
-  await page.getByTestId('todo-input').fill('New Todo')
-  await page.getByTestId('todo-assignee-select').selectOption('3')
-  await page.getByTestId('todo-submit').click()
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByText('New Todo')).toBeVisible()
-
-  await expect(page.getByText('Assigned to: Giannis')).toBeVisible()
-  await expect(page.getByTestId('todo-assignee-select')).toHaveValue('')
-
-  await page.getByTestId('todo-delete').last().click()
-
-  await expect(page.getByText('New Todo')).not.toBeVisible()
+  await expect(page.getByTestId('todo-todo-title').first()).toHaveText(
+    'Test Todo'
+  )
 })

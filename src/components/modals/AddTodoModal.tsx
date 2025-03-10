@@ -80,7 +80,11 @@ export function AddTodoModal({ onClose }: { onClose: () => void }) {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    data-testid="add-todo-title-input"
+                    placeholder="Add todo title..."
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -94,7 +98,11 @@ export function AddTodoModal({ onClose }: { onClose: () => void }) {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    data-testid="add-todo-description-input"
+                    placeholder="Add todo description..."
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -118,7 +126,11 @@ export function AddTodoModal({ onClose }: { onClose: () => void }) {
                   </FormControl>
                   <SelectContent className="z-[1009]">
                     {statuses?.map((status) => (
-                      <SelectItem key={status} value={status}>
+                      <SelectItem
+                        data-testid={`add-todo-status-select-item-${status}`}
+                        key={status}
+                        value={status}
+                      >
                         {status}
                       </SelectItem>
                     ))}
@@ -145,7 +157,11 @@ export function AddTodoModal({ onClose }: { onClose: () => void }) {
                   </FormControl>
                   <SelectContent className="z-[1009]">
                     {users?.map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
+                      <SelectItem
+                        data-testid={`add-todo-assigned-to-select-item-${user.name}`}
+                        key={user.id}
+                        value={user.id}
+                      >
                         {user.name}
                       </SelectItem>
                     ))}
@@ -155,7 +171,9 @@ export function AddTodoModal({ onClose }: { onClose: () => void }) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button data-testid="add-todo-modal-submit" type="submit">
+            Submit
+          </Button>
         </form>
       </Form>
     </BaseModal>

@@ -59,11 +59,15 @@ export function TodoCard({ todo }: { todo: Todo }) {
       style={style}
       {...attributes}
       {...listeners}
+      data-testid={`todo-card-${todo.title}`}
     >
       <TodoCardHeader>
-        <TodoCardTitle>{todo.title}</TodoCardTitle>
+        <TodoCardTitle data-testid={`todo-${todo.status}-title`}>
+          {todo.title}
+        </TodoCardTitle>
         <ActionButtons>
           <EditButton
+            data-testid={`edit-todo-button-${todo.title}`}
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
@@ -73,6 +77,7 @@ export function TodoCard({ todo }: { todo: Todo }) {
             <PencilIcon className="w-3 h-3" />
           </EditButton>
           <DeleteButton
+            data-testid={`delete-todo-button-${todo.title}`}
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
@@ -97,7 +102,11 @@ export function TodoCard({ todo }: { todo: Todo }) {
             <SelectGroup>
               <SelectLabel>Statuses</SelectLabel>
               {currentBoard!.statuses.map((status) => (
-                <SelectItem key={status} value={status}>
+                <SelectItem
+                  data-testid={`todo-card-status-card-select-item-${status}`}
+                  key={status}
+                  value={status}
+                >
                   {status}
                 </SelectItem>
               ))}

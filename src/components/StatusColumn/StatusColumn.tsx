@@ -63,6 +63,7 @@ export function StatusColumn({ status }: { status: string }) {
       style={style}
       {...attributes}
       {...listeners}
+      data-testid={`status-column-${status}`}
     >
       <StatusColumnHeader>
         <StatusColumnTitle>{status}</StatusColumnTitle>
@@ -74,6 +75,7 @@ export function StatusColumn({ status }: { status: string }) {
               statuses: currentBoard!.statuses.filter((s) => s !== status),
             })
           }}
+          data-testid={`delete-status-column-button-${status}`}
         >
           <TrashIcon className="w-3 h-3" />
         </DeleteButton>
