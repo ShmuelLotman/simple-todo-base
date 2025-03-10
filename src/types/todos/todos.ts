@@ -1,3 +1,4 @@
+import { TBoard } from '../boards'
 import { TUser } from '../users'
 
 export type Todo = {
@@ -5,4 +6,10 @@ export type Todo = {
   title: string
   completed: boolean
   assignedTo: TUser['id'] | null
+  boardId: TBoard['id']
+  status: string
+  order: number
+  description: string
+  createdAt?: string
+  updatedAt?: string
 }

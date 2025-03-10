@@ -38,6 +38,7 @@ export const theme = {
       backgroundExtraLight: '#00152E05',
       textDark: '#00152E',
       shadow: '#00152E33',
+      modal: '#00152ECC',
     },
     white: '#FFFFFF',
   },
@@ -75,7 +76,10 @@ export const theme = {
       small: '4px',
       medium: '8px',
       large: '12px',
+      xlarge: '16px',
+      default: '20px',
       pill: '32px',
+      circle: '50%',
     },
   },
   shadow: (size: string, color: string) => {
